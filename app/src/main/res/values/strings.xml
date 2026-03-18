@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Crovian Attendance</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_history">History</string>
+    <string name="title_stats">Stats</string>
+    <string name="title_settings">Settings</string>
+</resources>
