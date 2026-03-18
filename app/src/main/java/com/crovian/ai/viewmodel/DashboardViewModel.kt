@@ -13,6 +13,9 @@ import com.crovian.ai.utils.DateUtils.getCurrentMonthString
 import com.crovian.ai.utils.DateUtils.getTodayString
 import kotlinx.coroutines.launch
 
+/**
+ * Summary of a user's attendance and financials for a specific month.
+ */
 data class MonthlySummary(
     val totalDaysWorked: Double = 0.0,
     val fullDays: Int = 0,
@@ -24,6 +27,9 @@ data class MonthlySummary(
     val dailyWage: Double = 0.0
 )
 
+/**
+ * ViewModel responsible for managing state and business logic on the Dashboard screen.
+ */
 class DashboardViewModel : ViewModel() {
 
     private val authRepo = AuthRepository()
@@ -42,6 +48,10 @@ class DashboardViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    /**
+     * Loads all necessary dashboard data for the current user, including
+     * monthly summaries, today's attendance, and recent advance payments.
+     */
     fun loadDashboardData() {
         val userId = authRepo.getCurrentUser()?.uid ?: return
         val currentMonth = getCurrentMonthString() // "YYYY-MM"
@@ -91,6 +101,9 @@ class DashboardViewModel : ViewModel() {
         )
     }
 
+    /**
+     * Records or updates the user's attendance for today.
+     */
     fun markAttendance(status: String, overtimeHours: Double, note: String) {
         val userId = authRepo.getCurrentUser()?.uid ?: return
         val today = getTodayString()
@@ -114,6 +127,9 @@ class DashboardViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Registers a new advance payment requested by the user.
+     */
     fun addAdvancePayment(date: String, amount: Double, note: String) {
         val userId = authRepo.getCurrentUser()?.uid ?: return
 
