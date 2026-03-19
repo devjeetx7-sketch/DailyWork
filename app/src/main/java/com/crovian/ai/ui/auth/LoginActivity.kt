@@ -11,11 +11,13 @@ import com.crovian.ai.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.crovian.ai.R
 
 class LoginActivity : AppCompatActivity() {
 
@@ -44,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("774633202989-por5403s5mh4h97c7p7dss1g516fcocu.apps.googleusercontent.com")
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .requestProfile()
             .build()
@@ -67,7 +69,10 @@ class LoginActivity : AppCompatActivity() {
             } catch (e: ApiException) {
                 binding.progressBar.visibility = View.GONE
                 binding.btnGoogleSignIn.isEnabled = true
-                Toast.makeText(this, "Sign-in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+
+                val statusCode = e.statusCode
+                val errorMessage = GoogleSignInStatusCodes.getStatusCodeString(statusCode)
+                Toast.makeText(this, "Sign-in failed ($statusCode): $errorMessage", Toast.LENGTH_LONG).show()
             }
         }
     }
