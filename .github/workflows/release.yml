@@ -54,7 +54,11 @@ jobs:
         run: |
           if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
             echo "Keystore base64 secret is empty. Generating a dummy keystore."
-            keytool -genkey -v -keystore app/keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias attendance_key -storepass 123456 -keypass 123456 -dname "CN=Dummy, OU=Dummy, O=Dummy, L=Dummy, ST=Dummy, C=US"
+            if [ ! -f "app/keystore.jks" ]; then
+              keytool -genkey -v -keystore app/keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias attendance_key -storepass 123456 -keypass 123456 -dname "CN=Dummy, OU=Dummy, O=Dummy, L=Dummy, ST=Dummy, C=US"
+            else
+              echo "Dummy keystore already exists."
+            fi
           else
             echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/keystore.jks
           fi
